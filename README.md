@@ -1,4 +1,4 @@
-## nrg-bulletin-board - API based bulletin board sofware
+## nrg-bulletin-board - API based bulletin board software
 
 ### Getting started
 To run an instance... TODO
