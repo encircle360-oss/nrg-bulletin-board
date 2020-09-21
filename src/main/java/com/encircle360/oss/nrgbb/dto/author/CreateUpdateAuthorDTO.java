@@ -23,9 +23,9 @@ public class CreateUpdateAuthorDTO {
     @Schema(name = "info", description = "some information about the author", example = "I'm living in georgia")
     private String info;
 
-    @Schema(name = "active", description = "shows if the authors is active or not")
+    @Schema(name = "active", description = "shows if the authors is active or not", example = "true")
     private boolean active;
 
-    @Schema(name = "archived", description = "shows if the authors is archived or not")
+    @Schema(name = "archived", description = "shows if the authors is archived or not", example = "false")
     private boolean archived;
 }

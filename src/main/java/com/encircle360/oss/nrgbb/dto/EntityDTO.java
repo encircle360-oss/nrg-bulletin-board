@@ -15,9 +15,12 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "Entity")
 public abstract class EntityDTO {
 
+    @Schema(name = "id", description = "Identifier of the entity", example = "5f68b8ae4fb93878ff6bd92f")
     private String id;
 
+    @Schema(name = "createdDate", description = "Date the entity was created", example = "")
     private LocalDateTime createdDate;
 
+    @Schema(name = "lastUpdated", description = "Date the entity was updated last", example = "")
     private LocalDateTime lastUpdated;
 }

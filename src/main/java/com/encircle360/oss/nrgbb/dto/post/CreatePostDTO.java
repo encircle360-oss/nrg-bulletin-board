@@ -22,13 +22,13 @@ public class CreatePostDTO {
     private String content;
 
     @NotBlank
-    @Schema(name = "authorId", description = "Id of the author from this post", example = "")
+    @Schema(name = "authorId", description = "Id of the author from this post", example = "5f68b8ae4fb93878ff6bd92f")
     private String authorId;
 
     @NotBlank
-    @Schema(name = "threadId", description = "Id of the thread this post is related to", example = "")
+    @Schema(name = "threadId", description = "Id of the thread this post is related to", example = "5f68b8ae4fb93878ff6bd92f")
     private String threadId;
 
-    @Schema(name = "answerOf", description = "Id of the post this post is an answer to", example = "")
+    @Schema(name = "answerOf", description = "Id of the post this post is an answer to", example = "5f68b8ae4fb93878ff6bd92f")
     private String answerOf;
 }

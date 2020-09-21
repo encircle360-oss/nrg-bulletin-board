@@ -17,15 +17,19 @@ import lombok.NoArgsConstructor;
 public class UpdateThreadDTO {
 
     @NotBlank
+    @Schema(name = "topic", description = "Topic of a thread", example = "Where to buy best Energy Drinks?")
     private String topic;
 
     @NotNull
-    private boolean active;
-
-    @NotNull
+    @Schema(name = "categoryId", description = "Id of the category this thread should have", example = "5f68b8ae4fb93878ff6bd92f")
     private String categoryId;
 
     @NotNull
+    @Schema(name = "active", description = "determines if a thread is active or not", example = "true")
+    private boolean active;
+
+    @NotNull
+    @Schema(name = "archived", description = "determines if a thread is archived or not", example = "false")
     private boolean archived;
 
 }
