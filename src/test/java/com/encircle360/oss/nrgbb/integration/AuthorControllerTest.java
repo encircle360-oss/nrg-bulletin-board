@@ -50,6 +50,30 @@ public class AuthorControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void testCreationAndUpdate() throws Exception {
+        AuthorDTO authorDTO = testCreation();
+        CreateUpdateAuthor createUpdateAuthor = CreateUpdateAuthor
+            .builder()
+            .name("Forrest Plump")
+            .active(true)
+            .archived(false)
+            .info("Life is like a box of energy drinks")
+            .build();
+
+        // sleep for other lastupdated
+        Thread.sleep(2000);
+
+        MvcResult result = put("/authors/" + authorDTO.getId(), createUpdateAuthor, status().isOk());
+        AuthorDTO updated = resultToObject(result, AuthorDTO.class);
+
+        Assertions.assertEquals("Forrest Plump", updated.getName());
+        Assertions.assertEquals("Life is like a box of energy drinks", updated.getInfo());
+        Assertions.assertEquals(authorDTO.getId(), updated.getId());
+        Assertions.assertNotEquals(authorDTO.getLastUpdated().truncatedTo(ChronoUnit.SECONDS), updated.getLastUpdated().truncatedTo(ChronoUnit.SECONDS));
+        Assertions.assertEquals(authorDTO.getCreatedDate().truncatedTo(ChronoUnit.SECONDS), updated.getCreatedDate().truncatedTo(ChronoUnit.SECONDS));
+    }
+
+    @Test
     void testCreationAndGet() throws Exception {
         AuthorDTO authorDTO = testCreation();
         MvcResult result = get("/authors/" + authorDTO.getId(), status().isOk());
@@ -60,9 +84,9 @@ public class AuthorControllerTest extends AbstractIntegrationTest {
         result = get("/authors", status().isOk());
         PageContainer<AuthorDTO> all = objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
         Assertions.assertNotNull(all);
-        Assertions.assertEquals(1, all.getPagination().getTotalElements());
+        Assertions.assertTrue(all.getPagination().getTotalElements() > 0);
 
-        assertAuthors(authorDTO, all.getContent().get(0));
+        assertAuthors(authorDTO, all.getContent().get(all.getContent().size() - 1));
     }
 
     void assertAuthors(AuthorDTO authorDTO, AuthorDTO getAuthor) {
