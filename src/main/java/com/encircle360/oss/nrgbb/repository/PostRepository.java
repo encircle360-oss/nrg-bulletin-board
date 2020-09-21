@@ -9,9 +9,12 @@ import com.encircle360.oss.nrgbb.model.Post;
 
 @Repository
 public interface PostRepository extends MongoRepository<Post, String> {
+
     Page<Post> findAllByAuthorId(String threadId, Pageable pageable);
 
     Page<Post> findAllByThreadId(String threadId, Pageable pageable);
 
     Page<Post> findAllByAuthorIdAndThreadId(String authorId, String threadId, Pageable pageable);
+
+    void deleteByThreadId(String threadId);
 }

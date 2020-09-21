@@ -9,9 +9,12 @@ import com.encircle360.oss.nrgbb.model.Thread;
 
 @Repository
 public interface ThreadRepository extends MongoRepository<Thread, String> {
+
     long countByCategoryId(String id);
 
     Page<Thread> findAllByAuthorId(String authorId, Pageable pageable);
+
     Page<Thread> findAllByCategoryId(String category, Pageable pageable);
+
     Page<Thread> findAllByAuthorIdAndCategoryId(String authorId, String categoryId, Pageable pageable);
 }

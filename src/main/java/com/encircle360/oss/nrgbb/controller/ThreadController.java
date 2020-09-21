@@ -26,6 +26,7 @@ import com.encircle360.oss.nrgbb.dto.thread.ThreadDTO;
 import com.encircle360.oss.nrgbb.dto.thread.UpdateThreadDTO;
 import com.encircle360.oss.nrgbb.mapper.ThreadMapper;
 import com.encircle360.oss.nrgbb.model.Thread;
+import com.encircle360.oss.nrgbb.service.PostService;
 import com.encircle360.oss.nrgbb.service.ThreadService;
 
 import lombok.RequiredArgsConstructor;
@@ -35,9 +36,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ThreadController {
 
-    private final ThreadMapper threadMapper = ThreadMapper.INSTANCE;
-
     private final ThreadService threadService;
+    private final PostService postService;
+
+    private final ThreadMapper threadMapper = ThreadMapper.INSTANCE;
 
     private final PageContainerFactory<ThreadDTO> pageContainerFactory = new PageContainerFactory<>();
 
@@ -91,6 +93,7 @@ public class ThreadController {
         if (thread == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        postService.deleteByThreadId(thread.getId());
         threadService.delete(thread);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
