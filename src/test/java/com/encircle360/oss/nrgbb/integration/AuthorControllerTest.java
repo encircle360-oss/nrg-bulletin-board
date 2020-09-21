@@ -19,8 +19,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 @AutoConfigureMockMvc
 public class AuthorControllerTest extends AbstractIntegrationTest {
 
-    @Test
-    AuthorDTO testCreation() throws Exception {
+    AuthorDTO create() throws Exception {
         CreateUpdateAuthor createUpdateAuthor = CreateUpdateAuthor
             .builder()
             .name("Forrest Gump")
@@ -45,13 +44,13 @@ public class AuthorControllerTest extends AbstractIntegrationTest {
 
     @Test
     void testCreationAndDelete() throws Exception {
-        AuthorDTO authorDTO = testCreation();
+        AuthorDTO authorDTO = create();
         delete("/authors/" + authorDTO.getId(), status().isNoContent());
     }
 
     @Test
     void testCreationAndUpdate() throws Exception {
-        AuthorDTO authorDTO = testCreation();
+        AuthorDTO authorDTO = create();
         CreateUpdateAuthor createUpdateAuthor = CreateUpdateAuthor
             .builder()
             .name("Forrest Plump")
@@ -75,7 +74,7 @@ public class AuthorControllerTest extends AbstractIntegrationTest {
 
     @Test
     void testCreationAndGet() throws Exception {
-        AuthorDTO authorDTO = testCreation();
+        AuthorDTO authorDTO = create();
         MvcResult result = get("/authors/" + authorDTO.getId(), status().isOk());
         AuthorDTO getAuthor = resultToObject(result, AuthorDTO.class);
 
