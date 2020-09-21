@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.encircle360.oss.nrgbb.dto.author.AuthorDTO;
-import com.encircle360.oss.nrgbb.dto.author.CreateUpdateAuthor;
+import com.encircle360.oss.nrgbb.dto.author.CreateUpdateAuthorDTO;
 import com.encircle360.oss.nrgbb.dto.category.CategoryDTO;
 import com.encircle360.oss.nrgbb.dto.category.CreateUpdateCategoryDTO;
 import com.encircle360.oss.nrgbb.dto.post.CreatePostDTO;
@@ -70,7 +70,7 @@ public abstract class AbstractIntegrationTest {
     }
 
     protected AuthorDTO createAuthor() throws Exception {
-        CreateUpdateAuthor createUpdateAuthor = CreateUpdateAuthor
+        CreateUpdateAuthorDTO createUpdateAuthor = CreateUpdateAuthorDTO
             .builder()
             .name("Forrest Gump")
             .active(true)

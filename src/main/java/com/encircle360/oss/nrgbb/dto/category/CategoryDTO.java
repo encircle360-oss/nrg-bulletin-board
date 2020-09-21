@@ -2,6 +2,7 @@ package com.encircle360.oss.nrgbb.dto.category;
 
 import com.encircle360.oss.nrgbb.dto.EntityDTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@Schema(name = "Category", description = "Category for threads")
 public class CategoryDTO extends EntityDTO {
 
     private String name;

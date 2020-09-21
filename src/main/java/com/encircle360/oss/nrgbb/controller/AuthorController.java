@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.encircle360.oss.nrgbb.dto.author.AuthorDTO;
-import com.encircle360.oss.nrgbb.dto.author.CreateUpdateAuthor;
+import com.encircle360.oss.nrgbb.dto.author.CreateUpdateAuthorDTO;
 import com.encircle360.oss.nrgbb.dto.pagination.PageContainer;
 import com.encircle360.oss.nrgbb.dto.pagination.PageContainerFactory;
 import com.encircle360.oss.nrgbb.mapper.AuthorMapper;
@@ -64,7 +64,7 @@ public class AuthorController {
     }
 
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthorDTO> create(@RequestBody @Valid final CreateUpdateAuthor createUpdateAuthor) {
+    public ResponseEntity<AuthorDTO> create(@RequestBody @Valid final CreateUpdateAuthorDTO createUpdateAuthor) {
         Author author = authorMapper.createFromDto(createUpdateAuthor);
         author = authorService.save(author);
 
@@ -73,7 +73,7 @@ public class AuthorController {
     }
 
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthorDTO> update(@PathVariable final String id, @RequestBody @Valid final CreateUpdateAuthor createUpdateAuthor) {
+    public ResponseEntity<AuthorDTO> update(@PathVariable final String id, @RequestBody @Valid final CreateUpdateAuthorDTO createUpdateAuthor) {
         Author author = authorService.get(id);
         if (author == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

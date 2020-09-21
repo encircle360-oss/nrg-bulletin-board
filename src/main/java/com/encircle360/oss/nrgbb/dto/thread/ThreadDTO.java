@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.encircle360.oss.nrgbb.dto.EntityDTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -15,6 +16,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@Schema(name = "Thread", description = "returns a thread with its topic, authorId and co.")
 public class ThreadDTO extends EntityDTO {
 
     private String topic;

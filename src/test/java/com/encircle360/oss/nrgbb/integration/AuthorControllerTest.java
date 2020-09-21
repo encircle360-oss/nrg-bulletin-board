@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MvcResult;
 
 import com.encircle360.oss.nrgbb.dto.author.AuthorDTO;
-import com.encircle360.oss.nrgbb.dto.author.CreateUpdateAuthor;
+import com.encircle360.oss.nrgbb.dto.author.CreateUpdateAuthorDTO;
 import com.encircle360.oss.nrgbb.dto.pagination.PageContainer;
 import com.fasterxml.jackson.core.type.TypeReference;
 
@@ -21,7 +21,7 @@ public class AuthorControllerTest extends AbstractIntegrationTest {
 
     @Test
     void badRequest() throws Exception {
-        CreateUpdateAuthor createUpdateAuthor = CreateUpdateAuthor
+        CreateUpdateAuthorDTO createUpdateAuthor = CreateUpdateAuthorDTO
             .builder()
             .active(true)
             .archived(false)
@@ -42,7 +42,7 @@ public class AuthorControllerTest extends AbstractIntegrationTest {
     @Test
     void testCreationAndUpdate() throws Exception {
         AuthorDTO authorDTO = createAuthor();
-        CreateUpdateAuthor createUpdateAuthor = CreateUpdateAuthor
+        CreateUpdateAuthorDTO createUpdateAuthor = CreateUpdateAuthorDTO
             .builder()
             .name("Forrest Plump")
             .active(true)

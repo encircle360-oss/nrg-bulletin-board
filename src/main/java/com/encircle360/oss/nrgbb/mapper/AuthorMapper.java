@@ -7,7 +7,7 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 import com.encircle360.oss.nrgbb.dto.author.AuthorDTO;
-import com.encircle360.oss.nrgbb.dto.author.CreateUpdateAuthor;
+import com.encircle360.oss.nrgbb.dto.author.CreateUpdateAuthorDTO;
 import com.encircle360.oss.nrgbb.model.Author;
 
 @Mapper
@@ -19,7 +19,7 @@ public interface AuthorMapper {
 
     public List<AuthorDTO> toDTOs(List<Author> authors);
 
-    public Author createFromDto(CreateUpdateAuthor createUpdateAuthor);
+    public Author createFromDto(CreateUpdateAuthorDTO createUpdateAuthor);
 
-    public void updateFromDto(CreateUpdateAuthor createUpdateAuthor, @MappingTarget Author author);
+    public void updateFromDto(CreateUpdateAuthorDTO createUpdateAuthor, @MappingTarget Author author);
 }

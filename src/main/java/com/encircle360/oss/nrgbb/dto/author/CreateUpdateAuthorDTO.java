@@ -2,6 +2,7 @@ package com.encircle360.oss.nrgbb.dto.author;
 
 import javax.validation.constraints.NotBlank;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateUpdateAuthor {
+@Schema(name = "CreateUpdateAuthor", description = "Creates an author in database")
+public class CreateUpdateAuthorDTO {
 
     @NotBlank
     private String name;
