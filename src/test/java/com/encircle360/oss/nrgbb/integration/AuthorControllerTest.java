@@ -19,29 +19,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 @AutoConfigureMockMvc
 public class AuthorControllerTest extends AbstractIntegrationTest {
 
-    AuthorDTO create() throws Exception {
-        CreateUpdateAuthor createUpdateAuthor = CreateUpdateAuthor
-            .builder()
-            .name("Forrest Gump")
-            .active(true)
-            .archived(false)
-            .info("Life is like a box of chocolates")
-            .build();
-
-        MvcResult result = post("/authors", createUpdateAuthor, status().isCreated());
-        AuthorDTO authorDTO = resultToObject(result, AuthorDTO.class);
-
-        // test if everything is on place
-        Assertions.assertEquals(createUpdateAuthor.getName(), authorDTO.getName());
-        Assertions.assertEquals(createUpdateAuthor.getInfo(), authorDTO.getInfo());
-        Assertions.assertEquals(createUpdateAuthor.isActive(), authorDTO.isActive());
-        Assertions.assertEquals(createUpdateAuthor.isArchived(), authorDTO.isArchived());
-        Assertions.assertNotNull(authorDTO.getId());
-        Assertions.assertNotNull(authorDTO.getCreatedDate());
-        Assertions.assertNotNull(authorDTO.getLastUpdated());
-        return authorDTO;
-    }
-
     @Test
     void badRequest() throws Exception {
         CreateUpdateAuthor createUpdateAuthor = CreateUpdateAuthor
@@ -50,7 +27,7 @@ public class AuthorControllerTest extends AbstractIntegrationTest {
             .archived(false)
             .info("Life is like a box of chocolates")
             .build();
-        AuthorDTO example = create();
+        AuthorDTO example = createAuthor();
 
         post("/authors", createUpdateAuthor, status().isBadRequest());
         put("/authors/" + example.getId(), createUpdateAuthor, status().isBadRequest());
@@ -58,13 +35,13 @@ public class AuthorControllerTest extends AbstractIntegrationTest {
 
     @Test
     void testCreationAndDelete() throws Exception {
-        AuthorDTO authorDTO = create();
+        AuthorDTO authorDTO = createAuthor();
         delete("/authors/" + authorDTO.getId(), status().isNoContent());
     }
 
     @Test
     void testCreationAndUpdate() throws Exception {
-        AuthorDTO authorDTO = create();
+        AuthorDTO authorDTO = createAuthor();
         CreateUpdateAuthor createUpdateAuthor = CreateUpdateAuthor
             .builder()
             .name("Forrest Plump")
@@ -88,7 +65,7 @@ public class AuthorControllerTest extends AbstractIntegrationTest {
 
     @Test
     void testCreationAndGet() throws Exception {
-        AuthorDTO authorDTO = create();
+        AuthorDTO authorDTO = createAuthor();
         MvcResult result = get("/authors/" + authorDTO.getId(), status().isOk());
         AuthorDTO getAuthor = resultToObject(result, AuthorDTO.class);
 

@@ -19,7 +19,7 @@ public class CategoryControllerTest extends AbstractIntegrationTest {
 
     @Test
     public void testCreation() throws Exception {
-        CategoryDTO categoryDTO = create();
+        CategoryDTO categoryDTO = createCategory();
     }
 
     @Test
@@ -27,7 +27,7 @@ public class CategoryControllerTest extends AbstractIntegrationTest {
         CreateUpdateCategoryDTO createUpdateCategory = CreateUpdateCategoryDTO
             .builder()
             .build();
-        CategoryDTO example = create();
+        CategoryDTO example = createCategory();
 
         post("/categories", createUpdateCategory, status().isBadRequest());
         put("/categories/" + example.getId(), createUpdateCategory, status().isBadRequest());
@@ -35,13 +35,13 @@ public class CategoryControllerTest extends AbstractIntegrationTest {
 
     @Test
     public void testCreationAndDeletion() throws Exception {
-        CategoryDTO categoryDTO = create();
+        CategoryDTO categoryDTO = createCategory();
         delete("/categories/" + categoryDTO.getId(), status().isNoContent());
     }
 
     @Test
     public void testCreationAndUpdate() throws Exception {
-        CategoryDTO categoryDTO = create();
+        CategoryDTO categoryDTO = createCategory();
         CreateUpdateCategoryDTO createUpdateCategory = CreateUpdateCategoryDTO
             .builder()
             .name("Life in Fuschl am See")
@@ -54,24 +54,6 @@ public class CategoryControllerTest extends AbstractIntegrationTest {
         Assertions.assertEquals("Life in Fuschl am See", updatedCategory.getName());
         Assertions.assertEquals(categoryDTO.getId(), updatedCategory.getId());
         Assertions.assertEquals(categoryDTO.getCreatedDate().truncatedTo(ChronoUnit.SECONDS), updatedCategory.getCreatedDate().truncatedTo(ChronoUnit.SECONDS));
-    }
-
-    public CategoryDTO create() throws Exception {
-        CreateUpdateCategoryDTO createUpdateCategory = CreateUpdateCategoryDTO
-            .builder()
-            .name("Life in Savannah")
-            .build();
-
-        MvcResult result = post("/categories", createUpdateCategory, status().isCreated());
-        CategoryDTO categoryDTO = resultToObject(result, CategoryDTO.class);
-
-        Assertions.assertNotNull(categoryDTO);
-        Assertions.assertNotNull(categoryDTO.getId());
-        Assertions.assertNotNull(categoryDTO.getCreatedDate());
-        Assertions.assertNotNull(categoryDTO.getLastUpdated());
-        Assertions.assertEquals(createUpdateCategory.getName(), categoryDTO.getName());
-
-        return categoryDTO;
     }
 
 }
