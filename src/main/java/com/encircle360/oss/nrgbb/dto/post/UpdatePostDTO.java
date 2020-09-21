@@ -18,6 +18,7 @@ public class UpdatePostDTO {
 
     @NotBlank
     @Size(min = 20)
+    @Schema(name = "content", description = "Content of the post", example = "At the kiosk in my corner, you can buy the best energy drinks")
     private String content;
 
 }

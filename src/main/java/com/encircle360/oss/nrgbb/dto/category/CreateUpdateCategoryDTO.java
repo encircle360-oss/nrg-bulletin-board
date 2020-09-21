@@ -16,5 +16,6 @@ import lombok.NoArgsConstructor;
 public class CreateUpdateCategoryDTO {
 
     @NotBlank
+    @Schema(name = "name", description = "a name for the category", example = "All about Energy Drinks")
     private String name;
 }

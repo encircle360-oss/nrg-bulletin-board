@@ -17,5 +17,6 @@ import lombok.experimental.SuperBuilder;
 @Schema(name = "Category", description = "Category for threads")
 public class CategoryDTO extends EntityDTO {
 
+    @Schema(name = "name", description = "a name for the category", example = "All about Energy Drinks")
     private String name;
 }

@@ -18,13 +18,17 @@ public class CreatePostDTO {
 
     @NotBlank
     @Size(min = 20)
+    @Schema(name = "content", description = "Content of the post", example = "At the kiosk in my corner, you can buy the best energy drinks")
     private String content;
 
     @NotBlank
+    @Schema(name = "authorId", description = "Id of the author from this post", example = "")
     private String authorId;
 
     @NotBlank
+    @Schema(name = "threadId", description = "Id of the thread this post is related to", example = "")
     private String threadId;
 
-    private String parentOf;
+    @Schema(name = "answerOf", description = "Id of the post this post is an answer to", example = "")
+    private String answerOf;
 }
