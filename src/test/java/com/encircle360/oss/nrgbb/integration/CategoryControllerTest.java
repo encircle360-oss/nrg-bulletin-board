@@ -23,6 +23,17 @@ public class CategoryControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
+    public void badRequest() throws Exception {
+        CreateUpdateCategoryDTO createUpdateCategory = CreateUpdateCategoryDTO
+            .builder()
+            .build();
+        CategoryDTO example = create();
+
+        post("/categories", createUpdateCategory, status().isBadRequest());
+        put("/categories/" + example.getId(), createUpdateCategory, status().isBadRequest());
+    }
+
+    @Test
     public void testCreationAndDeletion() throws Exception {
         CategoryDTO categoryDTO = create();
         delete("/categories/" + categoryDTO.getId(), status().isNoContent());
