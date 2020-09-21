@@ -44,9 +44,11 @@ public class ThreadController {
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PageContainer<ThreadDTO>> getAll(@RequestParam(required = false) final Integer size,
                                                            @RequestParam(required = false) final Integer page,
-                                                           @RequestParam(required = false) final String sort) {
+                                                           @RequestParam(required = false) final String sort,
+                                                           @RequestParam(required = false) final String authorId,
+                                                           @RequestParam(required = false) final String categoryId) {
         Pageable pageable = pageContainerFactory.mapRequestToPageable(size, page, sort);
-        Page<Thread> threadPage = threadService.getAll(pageable);
+        Page<Thread> threadPage = threadService.getAll(authorId, categoryId, pageable);
         List<ThreadDTO> threadDTOs = threadMapper.toDtos(threadPage.getContent());
 
         PageContainer<ThreadDTO> pageContainer = pageContainerFactory.getPageContainer(pageable, threadPage, threadDTOs);

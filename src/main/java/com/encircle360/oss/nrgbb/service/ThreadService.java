@@ -15,8 +15,19 @@ public class ThreadService {
 
     private final ThreadRepository threadRepository;
 
-    public Page<Thread> getAll(Pageable pageable) {
-        return threadRepository.findAll(pageable);
+    public Page<Thread> getAll(String authorId, String categoryId, Pageable pageable) {
+        if (authorId == null && categoryId == null) {
+            return threadRepository.findAll(pageable);
+        }
+
+        if (authorId != null && categoryId == null) {
+            return threadRepository.findAllByAuthorId(authorId, pageable);
+        }
+
+        if (authorId == null) {
+            return threadRepository.findAllByCategoryId(categoryId, pageable);
+        }
+        return threadRepository.findAllByAuthorIdAndCategoryId(authorId, categoryId, pageable);
     }
 
     public Thread get(final String id) {
