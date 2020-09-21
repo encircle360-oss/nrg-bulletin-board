@@ -2,6 +2,8 @@ package com.encircle360.oss.nrgbb.integration;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.temporal.ChronoUnit;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -45,5 +47,21 @@ public class PostControllerTest extends AbstractIntegrationTest {
         ThreadDTO threadDTO = createThread();
         PostDTO postDTO = createPost(threadDTO.getAuthorId(), threadDTO.getId());
         delete("/posts/" + postDTO.getId(), status().isNoContent());
+    }
+
+    @Test
+    void testGet() throws Exception {
+        ThreadDTO threadDTO = createThread();
+        PostDTO postDTO = createPost(threadDTO.getAuthorId(), threadDTO.getId());
+        MvcResult result = get("/posts/" + postDTO.getId(), status().isOk());
+        PostDTO getPost = resultToObject(result, PostDTO.class);
+
+        Assertions.assertEquals(postDTO.getId(), getPost.getId());
+        Assertions.assertEquals(postDTO.getAuthorId(), getPost.getAuthorId());
+        Assertions.assertEquals(postDTO.getThreadId(), getPost.getThreadId());
+        Assertions.assertEquals(postDTO.getAnswerOf(), getPost.getAnswerOf());
+        Assertions.assertEquals(postDTO.getContent(), getPost.getContent());
+        Assertions.assertEquals(postDTO.getLastUpdated().truncatedTo(ChronoUnit.MINUTES), getPost.getLastUpdated().truncatedTo(ChronoUnit.MINUTES));
+        Assertions.assertEquals(postDTO.getCreatedDate().truncatedTo(ChronoUnit.MINUTES), getPost.getCreatedDate().truncatedTo(ChronoUnit.MINUTES));
     }
 }
