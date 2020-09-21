@@ -47,6 +47,7 @@ public class PostController {
 
     private final PageContainerFactory<PostDTO> pageContainerFactory = new PageContainerFactory<>();
 
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<PageContainer<PostDTO>> getAll(@RequestParam(required = false) final Integer size,
                                                          @RequestParam(required = false) final Integer page,
                                                          @RequestParam(required = false) final String sort,
