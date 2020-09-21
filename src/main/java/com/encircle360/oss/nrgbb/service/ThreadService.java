@@ -30,4 +30,8 @@ public class ThreadService {
     public void delete(Thread thread) {
         threadRepository.delete(thread);
     }
+
+    public long countByCategoryId(String id) {
+        return threadRepository.countByCategoryId(id);
+    }
 }

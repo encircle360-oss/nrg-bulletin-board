@@ -7,4 +7,5 @@ import com.encircle360.oss.nrgbb.model.Thread;
 
 @Repository
 public interface ThreadRepository extends MongoRepository<Thread, String> {
+    long countByCategoryId(String id);
 }

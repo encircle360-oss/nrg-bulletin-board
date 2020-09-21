@@ -22,6 +22,8 @@ public class Thread extends AbstractMongoDbEntity {
 
     private String authorId;
 
+    private String categoryId;
+
     private LocalDateTime lastAnswerTime;
 
     private boolean active;

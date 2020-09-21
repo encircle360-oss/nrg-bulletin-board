@@ -26,6 +26,7 @@ import com.encircle360.oss.nrgbb.dto.pagination.PageContainerFactory;
 import com.encircle360.oss.nrgbb.mapper.CategoryMapper;
 import com.encircle360.oss.nrgbb.model.Category;
 import com.encircle360.oss.nrgbb.service.CategoryService;
+import com.encircle360.oss.nrgbb.service.ThreadService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,9 +35,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CategoryController {
 
-    private final CategoryMapper categoryMapper = CategoryMapper.INSTANCE;
-
     private final CategoryService categoryService;
+    private final ThreadService threadService;
+
+    private final CategoryMapper categoryMapper = CategoryMapper.INSTANCE;
 
     private final PageContainerFactory<CategoryDTO> pageContainerFactory = new PageContainerFactory<>();
 
@@ -93,6 +95,12 @@ public class CategoryController {
         Category category = categoryService.get(id);
         if (category == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        long threadCount = threadService.countByCategoryId(id);
+
+        if (threadCount > 0) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
 
         categoryService.delete(category);
