@@ -43,6 +43,20 @@ public class AuthorControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void badRequest() throws Exception {
+        CreateUpdateAuthor createUpdateAuthor = CreateUpdateAuthor
+            .builder()
+            .active(true)
+            .archived(false)
+            .info("Life is like a box of chocolates")
+            .build();
+        AuthorDTO example = create();
+
+        post("/authors", createUpdateAuthor, status().isBadRequest());
+        put("/authors/" + example.getId(), createUpdateAuthor, status().isBadRequest());
+    }
+
+    @Test
     void testCreationAndDelete() throws Exception {
         AuthorDTO authorDTO = create();
         delete("/authors/" + authorDTO.getId(), status().isNoContent());
