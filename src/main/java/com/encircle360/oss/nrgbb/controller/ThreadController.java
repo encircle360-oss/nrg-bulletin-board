@@ -36,8 +36,8 @@ import lombok.RequiredArgsConstructor;
 
 @Validated
 @RestController
-@RequestMapping("/threads")
 @RequiredArgsConstructor
+@RequestMapping("/threads")
 public class ThreadController {
 
     private final ThreadService threadService;
