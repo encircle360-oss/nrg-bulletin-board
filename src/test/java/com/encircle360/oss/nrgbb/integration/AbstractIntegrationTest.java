@@ -9,7 +9,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.encircle360.oss.nrgbb.dto.author.AuthorDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -55,7 +54,7 @@ public abstract class AbstractIntegrationTest {
             .andReturn();
     }
 
-    protected AuthorDTO resultToObject(MvcResult result, Class<AuthorDTO> clazz) throws UnsupportedEncodingException, JsonProcessingException {
+    protected <T> T resultToObject(MvcResult result, Class<T> clazz) throws UnsupportedEncodingException, JsonProcessingException {
         return objectMapper.readValue(result.getResponse().getContentAsString(), clazz);
     }
 }
