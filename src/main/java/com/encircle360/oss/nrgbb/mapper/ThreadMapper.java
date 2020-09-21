@@ -2,6 +2,7 @@ package com.encircle360.oss.nrgbb.mapper;
 
 import java.util.List;
 
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -11,6 +12,7 @@ import com.encircle360.oss.nrgbb.dto.thread.CreateThreadDTO;
 import com.encircle360.oss.nrgbb.dto.thread.ThreadDTO;
 import com.encircle360.oss.nrgbb.dto.thread.UpdateThreadDTO;
 import com.encircle360.oss.nrgbb.model.Thread;
+import com.encircle360.oss.nrgbb.util.StringUtils;
 
 @Mapper
 public interface ThreadMapper {
@@ -26,4 +28,8 @@ public interface ThreadMapper {
     @Mapping(target = "authorId", ignore = true)
     public void updateFromDto(UpdateThreadDTO updateThreadDTO, @MappingTarget Thread thread);
 
+    @AfterMapping
+    default void afterFromDto(@MappingTarget Thread thread) {
+        thread.setTopic(StringUtils.noHtml(thread.getTopic()));
+    }
 }
