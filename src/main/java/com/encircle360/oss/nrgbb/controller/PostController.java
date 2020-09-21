@@ -49,9 +49,11 @@ public class PostController {
 
     public ResponseEntity<PageContainer<PostDTO>> getAll(@RequestParam(required = false) final Integer size,
                                                          @RequestParam(required = false) final Integer page,
-                                                         @RequestParam(required = false) final String sort) {
+                                                         @RequestParam(required = false) final String sort,
+                                                         @RequestParam(required = false) final String threadId,
+                                                         @RequestParam(required = false) final String authorId) {
         Pageable pageable = pageContainerFactory.mapRequestToPageable(size, page, sort);
-        Page<Post> postPage = postService.getAll(pageable);
+        Page<Post> postPage = postService.getAll(threadId, authorId, pageable);
         List<PostDTO> postDtos = postMapper.toDto(postPage.getContent());
 
         PageContainer<PostDTO> pageContainer = pageContainerFactory.getPageContainer(pageable, postPage, postDtos);

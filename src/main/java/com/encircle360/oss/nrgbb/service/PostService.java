@@ -15,8 +15,19 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    public Page<Post> getAll(Pageable pageable) {
-        return postRepository.findAll(pageable);
+    public Page<Post> getAll(String threadId, String authorId, Pageable pageable) {
+        if (authorId == null && threadId == null) {
+            return postRepository.findAll(pageable);
+        }
+
+        if (threadId != null && authorId == null) {
+            return postRepository.findAllByThreadId(threadId, pageable);
+        }
+
+        if (threadId == null) {
+            return postRepository.findAllByAuthorId(threadId, pageable);
+        }
+        return postRepository.findAllByAuthorIdAndThreadId(authorId, threadId, pageable);
     }
 
     public Post get(String id) {
