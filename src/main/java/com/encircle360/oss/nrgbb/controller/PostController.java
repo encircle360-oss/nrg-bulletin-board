@@ -2,6 +2,7 @@ package com.encircle360.oss.nrgbb.controller;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -90,6 +91,11 @@ public class PostController {
         Post post = postMapper.createFromDto(createPostDTO);
         post = postService.save(post);
         PostDTO postDTO = postMapper.toDto(post);
+
+        // sets last answertime
+        thread.setLastAnswerTime(LocalDateTime.now());
+        threadService.save(thread);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(postDTO);
     }
 
