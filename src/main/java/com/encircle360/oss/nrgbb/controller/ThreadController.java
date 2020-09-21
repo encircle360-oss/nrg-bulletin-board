@@ -1,5 +1,7 @@
 package com.encircle360.oss.nrgbb.controller;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -7,8 +9,8 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,8 +31,10 @@ import com.encircle360.oss.nrgbb.model.Thread;
 import com.encircle360.oss.nrgbb.service.PostService;
 import com.encircle360.oss.nrgbb.service.ThreadService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
+@Validated
 @RestController
 @RequestMapping("/threads")
 @RequiredArgsConstructor
@@ -43,7 +47,8 @@ public class ThreadController {
 
     private final PageContainerFactory<ThreadDTO> pageContainerFactory = new PageContainerFactory<>();
 
-    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", produces = APPLICATION_JSON_VALUE)
+    @Operation(operationId = "getAllThreads", description = "returns all threads in a pageable way, you can filter with authorId and/or categoryId")
     public ResponseEntity<PageContainer<ThreadDTO>> getAll(@RequestParam(required = false) final Integer size,
                                                            @RequestParam(required = false) final Integer page,
                                                            @RequestParam(required = false) final String sort,
@@ -58,7 +63,8 @@ public class ThreadController {
         return ResponseEntity.status(HttpStatus.OK).body(pageContainer);
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
+    @Operation(operationId = "getThread", description = "returns one thread by id")
     public ResponseEntity<ThreadDTO> get(@PathVariable final String id) {
         Thread thread = threadService.get(id);
         if (thread == null) {
@@ -68,7 +74,8 @@ public class ThreadController {
         return ResponseEntity.status(HttpStatus.OK).body(threadDto);
     }
 
-    @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(operationId = "createThread", description = "Creates a thread")
+    @PostMapping(value = "", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<ThreadDTO> create(@RequestBody @Valid final CreateThreadDTO createThreadDTO) {
         Thread thread = threadMapper.createFromDto(createThreadDTO);
         thread = threadService.save(thread);
@@ -76,7 +83,8 @@ public class ThreadController {
         return ResponseEntity.status(HttpStatus.CREATED).body(threadDTO);
     }
 
-    @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(operationId = "updateThread", description = "updates a thread by id")
+    @PutMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<ThreadDTO> update(@PathVariable final String id, @RequestBody @Valid final UpdateThreadDTO updateThreadDTO) {
         Thread thread = threadService.get(id);
         if (thread == null) {
@@ -87,7 +95,8 @@ public class ThreadController {
         return ResponseEntity.status(HttpStatus.OK).body(threadDTO);
     }
 
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(operationId = "deleteThread", description = "deletes a thread by id")
+    @DeleteMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable final String id) {
         Thread thread = threadService.get(id);
         if (thread == null) {

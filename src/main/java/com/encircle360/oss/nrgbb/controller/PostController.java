@@ -1,5 +1,7 @@
 package com.encircle360.oss.nrgbb.controller;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -7,8 +9,8 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,8 +34,10 @@ import com.encircle360.oss.nrgbb.service.AuthorService;
 import com.encircle360.oss.nrgbb.service.PostService;
 import com.encircle360.oss.nrgbb.service.ThreadService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/posts")
@@ -47,7 +51,8 @@ public class PostController {
 
     private final PageContainerFactory<PostDTO> pageContainerFactory = new PageContainerFactory<>();
 
-    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", produces = APPLICATION_JSON_VALUE)
+    @Operation(operationId = "getAllPosts", description = "returns all posts in a pageable way, you can also filter with threadId and/or authorId")
     public ResponseEntity<PageContainer<PostDTO>> getAll(@RequestParam(required = false) final Integer size,
                                                          @RequestParam(required = false) final Integer page,
                                                          @RequestParam(required = false) final String sort,
@@ -61,7 +66,8 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(pageContainer);
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
+    @Operation(operationId = "getPost", description = "returns a post by its id")
     public ResponseEntity<PostDTO> get(@PathVariable final String id) {
         Post post = postService.get(id);
         if (post == null) {
@@ -73,7 +79,8 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(postDto);
     }
 
-    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(operationId = "createPost", description = "creates a post")
+    @PostMapping(value = "", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<PostDTO> create(@RequestBody @Valid CreatePostDTO createPostDTO) {
         Author author = authorService.get(createPostDTO.getAuthorId());
         Thread thread = threadService.get(createPostDTO.getThreadId());
@@ -86,7 +93,8 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(postDTO);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(operationId = "updatePost", description = "updates a post by its id")
+    @PutMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<PostDTO> update(@PathVariable final String id, @RequestBody @Valid UpdatePostDTO updatePostDTO) {
         Post post = postService.get(id);
         if (post == null) {
@@ -100,7 +108,8 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(postDTO);
     }
 
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(operationId = "deletePost", description = "deletes a post by its id")
+    @DeleteMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable final String id) {
         Post post = postService.get(id);
         if (post == null) {

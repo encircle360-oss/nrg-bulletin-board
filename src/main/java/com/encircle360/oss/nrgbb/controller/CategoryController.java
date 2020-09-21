@@ -1,5 +1,7 @@
 package com.encircle360.oss.nrgbb.controller;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 import java.util.List;
 
 import javax.validation.Valid;
@@ -7,7 +9,6 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,6 +30,7 @@ import com.encircle360.oss.nrgbb.model.Category;
 import com.encircle360.oss.nrgbb.service.CategoryService;
 import com.encircle360.oss.nrgbb.service.ThreadService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 @Validated
@@ -44,7 +46,8 @@ public class CategoryController {
 
     private final PageContainerFactory<CategoryDTO> pageContainerFactory = new PageContainerFactory<>();
 
-    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", produces = APPLICATION_JSON_VALUE)
+    @Operation(operationId = "getAllCategories", description = "returns all categories in a pageable way")
     public ResponseEntity<PageContainer<CategoryDTO>> getAll(@RequestParam(required = false) final Integer size,
                                                              @RequestParam(required = false) final Integer page,
                                                              @RequestParam(required = false) final String sort) {
@@ -57,7 +60,8 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(pageContainer);
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
+    @Operation(operationId = "getCategory", description = "gets one category by its id")
     public ResponseEntity<CategoryDTO> get(@PathVariable final String id) {
         Category category = categoryService.get(id);
         if (category == null) {
@@ -69,7 +73,8 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(categoryDTO);
     }
 
-    @PostMapping(value = "", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(operationId = "createCategory", description = "creates a category")
+    @PostMapping(value = "", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> create(@RequestBody @Valid final CreateUpdateCategoryDTO createUpdateCategoryDTO) {
         Category category = categoryMapper.createFromDto(createUpdateCategoryDTO);
         category = categoryService.save(category);
@@ -78,7 +83,8 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryDto);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(operationId = "updateCategory", description = "updates a category by its id")
+    @PutMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> update(@PathVariable final String id, @RequestBody @Valid final CreateUpdateCategoryDTO createUpdateCategoryDTO) {
         Category category = categoryService.get(id);
         if (category == null) {
@@ -92,7 +98,8 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(categoryDTO);
     }
 
-    @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @DeleteMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
+    @Operation(operationId = "deleteCategory", description = "deletes a category by the given id")
     public ResponseEntity<Void> delete(@PathVariable final String id) {
         Category category = categoryService.get(id);
         if (category == null) {
