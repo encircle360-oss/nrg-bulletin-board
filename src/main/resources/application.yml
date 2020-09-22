@@ -1,3 +1,11 @@
 spring:
   application:
     name: nrg-bb
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:1111/auth/realms/master
+
+resourceServer:
+  resourceId: nrg-bulletin-board
