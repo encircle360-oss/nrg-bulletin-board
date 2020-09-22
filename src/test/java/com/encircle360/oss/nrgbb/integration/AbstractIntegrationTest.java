@@ -1,16 +1,26 @@
 package com.encircle360.oss.nrgbb.integration;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.UnsupportedEncodingException;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import com.encircle360.oss.nrgbb.dto.author.AuthorDTO;
 import com.encircle360.oss.nrgbb.dto.author.CreateUpdateAuthorDTO;
@@ -20,10 +30,17 @@ import com.encircle360.oss.nrgbb.dto.post.CreatePostDTO;
 import com.encircle360.oss.nrgbb.dto.post.PostDTO;
 import com.encircle360.oss.nrgbb.dto.thread.CreateThreadDTO;
 import com.encircle360.oss.nrgbb.dto.thread.ThreadDTO;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class AbstractIntegrationTest {
+
+    @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
+    private String oauth2IssuerUri;
+
+    @Value("${spring.application.name}")
+    private String clientId;
 
     @Autowired
     protected MockMvc mockMvc;
@@ -31,8 +48,46 @@ public abstract class AbstractIntegrationTest {
     @Autowired
     protected ObjectMapper objectMapper;
 
+    private String token;
+
+    @BeforeEach
+    protected void setToken() {
+        getJwtToken("test", "test");
+    }
+
+    public void getJwtToken(String username, String password) {
+        String url = oauth2IssuerUri.concat("/protocol/openid-connect/token");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("grant_type", "password");
+        params.add("client_id", clientId);
+        params.add("username", username);
+        params.add("password", password);
+
+        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+        ResponseEntity<AccessToken> response = new RestTemplate().postForEntity(url, request, AccessToken.class);
+
+        assertNotNull(response);
+        assertNotNull(response.getBody());
+
+        String accessToken = response.getBody().accessToken;
+        assertNotNull(accessToken);
+        assertFalse(accessToken.isBlank());
+
+        this.token = "Bearer " + accessToken;
+    }
+
+    private static class AccessToken {
+        @JsonProperty("access_token")
+        public String accessToken;
+    }
+
     protected <T> MvcResult post(String url, T object, ResultMatcher status) throws Exception {
         return mockMvc.perform(MockMvcRequestBuilders.post(url)
+            .header("Authorization", token)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(object)))
             .andExpect(status)
@@ -41,6 +96,7 @@ public abstract class AbstractIntegrationTest {
 
     protected <T> MvcResult put(String url, T object, ResultMatcher status) throws Exception {
         return mockMvc.perform(MockMvcRequestBuilders.put(url)
+            .header("Authorization", token)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(object)))
             .andExpect(status)
@@ -48,19 +104,22 @@ public abstract class AbstractIntegrationTest {
     }
 
     protected MvcResult emptyPost(String url, ResultMatcher status) throws Exception {
-        return mockMvc.perform(MockMvcRequestBuilders.post(url))
+        return mockMvc.perform(MockMvcRequestBuilders.post(url)
+            .header("Authorization", token))
             .andExpect(status)
             .andReturn();
     }
 
     protected MvcResult get(String url, ResultMatcher status) throws Exception {
-        return mockMvc.perform(MockMvcRequestBuilders.get(url))
+        return mockMvc.perform(MockMvcRequestBuilders.get(url)
+            .header("Authorization", token))
             .andExpect(status)
             .andReturn();
     }
 
     protected MvcResult delete(String url, ResultMatcher status) throws Exception {
-        return mockMvc.perform(MockMvcRequestBuilders.delete(url))
+        return mockMvc.perform(MockMvcRequestBuilders.delete(url)
+            .header("Authorization", token))
             .andExpect(status)
             .andReturn();
     }
