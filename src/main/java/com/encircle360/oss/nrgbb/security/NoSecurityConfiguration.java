@@ -22,10 +22,6 @@ public class NoSecurityConfiguration extends WebSecurityConfigurerAdapter {
             .sessionAuthenticationStrategy(new NullAuthenticatedSessionStrategy())
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
-            .authorizeRequests()
-            .antMatchers()
-            .permitAll()
-            .anyRequest()
             .anonymous();
     }
 }
