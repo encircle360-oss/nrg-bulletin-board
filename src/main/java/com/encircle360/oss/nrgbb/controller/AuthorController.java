@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ import com.encircle360.oss.nrgbb.dto.pagination.PageContainer;
 import com.encircle360.oss.nrgbb.dto.pagination.PageContainerFactory;
 import com.encircle360.oss.nrgbb.mapper.AuthorMapper;
 import com.encircle360.oss.nrgbb.model.Author;
+import com.encircle360.oss.nrgbb.security.Roles;
 import com.encircle360.oss.nrgbb.service.AuthorService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,6 +46,7 @@ public class AuthorController {
 
     private final PageContainerFactory<AuthorDTO> pageContainerFactory = new PageContainerFactory<>();
 
+    @Secured(Roles.Author.CAN_LIST)
     @GetMapping(value = "", produces = APPLICATION_JSON_VALUE)
     @Operation(operationId = "getAllAuthors", description = "returns authors in a pageable way")
     public ResponseEntity<PageContainer<AuthorDTO>> getAll(@RequestParam(required = false) final Integer size,
@@ -58,6 +61,7 @@ public class AuthorController {
         return ResponseEntity.status(HttpStatus.OK).body(pageContainer);
     }
 
+    @Secured(Roles.Author.CAN_GET)
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @Operation(operationId = "getAuthor", description = "gets an author by id")
     public ResponseEntity<AuthorDTO> get(@PathVariable final String id) {
@@ -69,6 +73,7 @@ public class AuthorController {
         return ResponseEntity.status(HttpStatus.OK).body(authorDTO);
     }
 
+    @Secured({Roles.Author.CAN_CREATE, Roles.Author.CAN_CREATE_OWN})
     @Operation(operationId = "createAuthor", description = "creates an author")
     @PostMapping(value = "", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDTO> create(@RequestBody @Valid final CreateUpdateAuthorDTO createUpdateAuthor) {
@@ -79,6 +84,7 @@ public class AuthorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(authorDTO);
     }
 
+    @Secured({Roles.Author.CAN_UPDATE, Roles.Author.CAN_UPDATE_OWN})
     @Operation(operationId = "updateAuthor", description = "updates an author by its id")
     @PutMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDTO> update(@PathVariable final String id, @RequestBody @Valid final CreateUpdateAuthorDTO createUpdateAuthor) {
@@ -94,6 +100,7 @@ public class AuthorController {
         return ResponseEntity.status(HttpStatus.OK).body(authorDTO);
     }
 
+    @Secured({Roles.Author.CAN_DELETE, Roles.Author.CAN_DELETE_OWN})
     @DeleteMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @Operation(operationId = "deleteAuthor", description = "deletes an author by its id")
     public ResponseEntity<Void> delete(@PathVariable final String id) {

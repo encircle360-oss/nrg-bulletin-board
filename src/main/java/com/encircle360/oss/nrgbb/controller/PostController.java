@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ import com.encircle360.oss.nrgbb.mapper.PostMapper;
 import com.encircle360.oss.nrgbb.model.Author;
 import com.encircle360.oss.nrgbb.model.Post;
 import com.encircle360.oss.nrgbb.model.Thread;
+import com.encircle360.oss.nrgbb.security.Roles;
 import com.encircle360.oss.nrgbb.service.AuthorService;
 import com.encircle360.oss.nrgbb.service.PostService;
 import com.encircle360.oss.nrgbb.service.ThreadService;
@@ -52,6 +54,7 @@ public class PostController {
 
     private final PageContainerFactory<PostDTO> pageContainerFactory = new PageContainerFactory<>();
 
+    @Secured(Roles.Post.CAN_LIST)
     @GetMapping(value = "", produces = APPLICATION_JSON_VALUE)
     @Operation(operationId = "getAllPosts", description = "returns all posts in a pageable way, you can also filter with threadId and/or authorId")
     public ResponseEntity<PageContainer<PostDTO>> getAll(@RequestParam(required = false) final Integer size,
@@ -67,6 +70,7 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(pageContainer);
     }
 
+    @Secured(Roles.Post.CAN_GET)
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @Operation(operationId = "getPost", description = "returns a post by its id")
     public ResponseEntity<PostDTO> get(@PathVariable final String id) {
@@ -80,6 +84,7 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(postDto);
     }
 
+    @Secured({Roles.Post.CAN_CREATE, Roles.Post.CAN_CREATE_OWN})
     @Operation(operationId = "createPost", description = "creates a post")
     @PostMapping(value = "", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<PostDTO> create(@RequestBody @Valid CreatePostDTO createPostDTO) {
@@ -99,6 +104,7 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(postDTO);
     }
 
+    @Secured({Roles.Post.CAN_UPDATE, Roles.Post.CAN_UPDATE_OWN})
     @Operation(operationId = "updatePost", description = "updates a post by its id")
     @PutMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<PostDTO> update(@PathVariable final String id, @RequestBody @Valid UpdatePostDTO updatePostDTO) {
@@ -114,6 +120,7 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(postDTO);
     }
 
+    @Secured({Roles.Post.CAN_DELETE, Roles.Post.CAN_DELETE_OWN})
     @Operation(operationId = "deletePost", description = "deletes a post by its id")
     @DeleteMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable final String id) {

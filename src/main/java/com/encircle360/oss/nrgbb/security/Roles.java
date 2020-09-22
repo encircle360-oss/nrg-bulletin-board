@@ -97,7 +97,6 @@ public class Roles {
         public static final String CAN_DELETE = PREFIX + Pattern.CAN_DELETE + ENTITY;
         public static final String CAN_DELETE_OWN = PREFIX + Pattern.CAN_DELETE_OWN + ENTITY;
         public static final String CAN_CREATE = PREFIX + Pattern.CAN_CREATE + ENTITY;
-        public static final String CAN_CREATE_OWN = PREFIX + Pattern.CAN_CREATE_OWN + ENTITY;
         public static final String CAN_UPDATE = PREFIX + Pattern.CAN_UPDATE + ENTITY;
         public static final String CAN_UPDATE_OWN = PREFIX + Pattern.CAN_UPDATE_OWN + ENTITY;
     }
@@ -129,11 +128,8 @@ public class Roles {
         public static final String CAN_LIST = PREFIX + Pattern.CAN_LIST + ENTITY;
         public static final String CAN_GET = PREFIX + Pattern.CAN_GET + ENTITY;
         public static final String CAN_DELETE = PREFIX + Pattern.CAN_DELETE + ENTITY;
-        public static final String CAN_DELETE_OWN = PREFIX + Pattern.CAN_DELETE_OWN + ENTITY;
         public static final String CAN_CREATE = PREFIX + Pattern.CAN_CREATE + ENTITY;
-        public static final String CAN_CREATE_OWN = PREFIX + Pattern.CAN_CREATE_OWN + ENTITY;
         public static final String CAN_UPDATE = PREFIX + Pattern.CAN_UPDATE + ENTITY;
-        public static final String CAN_UPDATE_OWN = PREFIX + Pattern.CAN_UPDATE_OWN + ENTITY;
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +28,7 @@ import com.encircle360.oss.nrgbb.dto.pagination.PageContainer;
 import com.encircle360.oss.nrgbb.dto.pagination.PageContainerFactory;
 import com.encircle360.oss.nrgbb.mapper.CategoryMapper;
 import com.encircle360.oss.nrgbb.model.Category;
+import com.encircle360.oss.nrgbb.security.Roles;
 import com.encircle360.oss.nrgbb.service.CategoryService;
 import com.encircle360.oss.nrgbb.service.ThreadService;
 
@@ -46,6 +48,7 @@ public class CategoryController {
 
     private final PageContainerFactory<CategoryDTO> pageContainerFactory = new PageContainerFactory<>();
 
+    @Secured(Roles.Category.CAN_LIST)
     @GetMapping(value = "", produces = APPLICATION_JSON_VALUE)
     @Operation(operationId = "getAllCategories", description = "returns all categories in a pageable way")
     public ResponseEntity<PageContainer<CategoryDTO>> getAll(@RequestParam(required = false) final Integer size,
@@ -60,6 +63,7 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(pageContainer);
     }
 
+    @Secured(Roles.Category.CAN_GET)
     @GetMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @Operation(operationId = "getCategory", description = "gets one category by its id")
     public ResponseEntity<CategoryDTO> get(@PathVariable final String id) {
@@ -73,6 +77,7 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(categoryDTO);
     }
 
+    @Secured(Roles.Category.CAN_CREATE)
     @Operation(operationId = "createCategory", description = "creates a category")
     @PostMapping(value = "", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> create(@RequestBody @Valid final CreateUpdateCategoryDTO createUpdateCategoryDTO) {
@@ -83,6 +88,7 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryDto);
     }
 
+    @Secured(Roles.Category.CAN_UPDATE)
     @Operation(operationId = "updateCategory", description = "updates a category by its id")
     @PutMapping(value = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<CategoryDTO> update(@PathVariable final String id, @RequestBody @Valid final CreateUpdateCategoryDTO createUpdateCategoryDTO) {
@@ -98,6 +104,7 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.OK).body(categoryDTO);
     }
 
+    @Secured(Roles.Category.CAN_DELETE)
     @DeleteMapping(value = "/{id}", produces = APPLICATION_JSON_VALUE)
     @Operation(operationId = "deleteCategory", description = "deletes a category by the given id")
     public ResponseEntity<Void> delete(@PathVariable final String id) {
