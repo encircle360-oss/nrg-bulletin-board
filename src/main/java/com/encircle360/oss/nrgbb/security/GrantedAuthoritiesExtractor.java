@@ -1,4 +1,4 @@
-package com.encircle360.oss.nrgbb.config.security;
+package com.encircle360.oss.nrgbb.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
