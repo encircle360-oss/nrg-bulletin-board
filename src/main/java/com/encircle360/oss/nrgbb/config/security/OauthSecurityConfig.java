@@ -1,6 +1,7 @@
 package com.encircle360.oss.nrgbb.config.security;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 
+@Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class OauthSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -24,6 +26,12 @@ public class OauthSecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement()
             .sessionAuthenticationStrategy(new NullAuthenticatedSessionStrategy())
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeRequests()
+            .antMatchers()
+            .permitAll()
+            .anyRequest()
+            .authenticated()
             .and()
             .oauth2ResourceServer(configurer -> configurer.jwt().jwtAuthenticationConverter(extractorConverter()));
     }
