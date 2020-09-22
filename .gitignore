@@ -32,3 +32,4 @@ out/
 .DS_Store
 *.hprof
 
+src/main/resources/application-local.yml
