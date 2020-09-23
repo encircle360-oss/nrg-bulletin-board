@@ -1,4 +1,4 @@
-package com.encircle360.oss.nrgbb.security;
+package com.encircle360.oss.nrgbb.security.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
