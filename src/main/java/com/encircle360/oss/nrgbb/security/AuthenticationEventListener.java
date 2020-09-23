@@ -9,9 +9,7 @@ import com.encircle360.oss.nrgbb.model.Author;
 import com.encircle360.oss.nrgbb.service.AuthorService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class AuthenticationEventListener {
@@ -21,6 +19,10 @@ public class AuthenticationEventListener {
     @EventListener(AuthenticationSuccessEvent.class)
     public void authSuccess(AuthenticationSuccessEvent event) {
         Jwt principal = (Jwt) event.getAuthentication().getPrincipal();
+        if(!principal.containsClaim("preferred_username")) {
+            return;
+        }
+
         String username = principal.getClaimAsString("preferred_username");
 
         // todo add check if token contains id of user
