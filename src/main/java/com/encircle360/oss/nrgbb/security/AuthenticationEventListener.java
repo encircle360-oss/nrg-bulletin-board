@@ -19,7 +19,7 @@ public class AuthenticationEventListener {
     @EventListener(AuthenticationSuccessEvent.class)
     public void authSuccess(AuthenticationSuccessEvent event) {
         Jwt principal = (Jwt) event.getAuthentication().getPrincipal();
-        if(!principal.containsClaim("preferred_username")) {
+        if (!principal.containsClaim("preferred_username")) {
             return;
         }
 
