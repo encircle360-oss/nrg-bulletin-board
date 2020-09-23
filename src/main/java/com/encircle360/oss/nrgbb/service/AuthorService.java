@@ -8,7 +8,9 @@ import com.encircle360.oss.nrgbb.model.Author;
 import com.encircle360.oss.nrgbb.repository.AuthorRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthorService {
@@ -29,5 +31,9 @@ public class AuthorService {
 
     public void delete(Author author) {
         authorRepository.delete(author);
+    }
+
+    public long countByEmail(String email) {
+        return authorRepository.countByEmail(email);
     }
 }

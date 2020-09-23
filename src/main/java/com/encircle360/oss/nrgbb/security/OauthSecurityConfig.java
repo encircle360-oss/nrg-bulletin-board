@@ -14,9 +14,14 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @Profile("!insecure")
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class OauthSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -35,7 +40,10 @@ public class OauthSecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest()
             .authenticated()
             .and()
-            .oauth2ResourceServer(configurer -> configurer.jwt().jwtAuthenticationConverter(extractorConverter()));
+            .oauth2ResourceServer(configurer -> {
+                    configurer.jwt().jwtAuthenticationConverter(extractorConverter());
+                }
+            );
     }
 
     @Bean

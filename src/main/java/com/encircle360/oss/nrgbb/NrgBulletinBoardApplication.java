@@ -11,4 +11,5 @@ public class NrgBulletinBoardApplication {
     public static void main(String[] args) {
         SpringApplication.run(NrgBulletinBoardApplication.class).start();
     }
+
 }

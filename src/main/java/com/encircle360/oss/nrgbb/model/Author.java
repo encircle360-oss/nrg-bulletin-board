@@ -18,6 +18,8 @@ public class Author extends AbstractMongoDbEntity {
 
     private String name;
 
+    private String email;
+
     private String info;
 
     private boolean active;

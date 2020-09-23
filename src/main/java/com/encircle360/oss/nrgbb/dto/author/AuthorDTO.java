@@ -20,6 +20,9 @@ public class AuthorDTO extends EntityDTO {
     @Schema(name = "name", description = "name of the author", example = "Forrest Gump")
     private String name;
 
+    @Schema(name = "email", description = "email of the author", example = "forrest.gump@localhost")
+    private String email;
+
     @Schema(name = "info", description = "some information about the author", example = "I'm living in georgia")
     private String info;
 
