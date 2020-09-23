@@ -22,10 +22,13 @@ public class AuthenticationEventListener {
     public void authSuccess(AuthenticationSuccessEvent event) {
         Jwt principal = (Jwt) event.getAuthentication().getPrincipal();
         String username = principal.getClaimAsString("preferred_username");
+
+        // todo add check if token contains id of user
         if (username == null || authorService.countByEmail(username) > 0) {
             return;
         }
 
+        // if user is not found in database create with data from JWT
         Author author = Author
             .builder()
             .name(username)
@@ -33,6 +36,7 @@ public class AuthenticationEventListener {
             .active(true)
             .archived(false)
             .build();
+
         authorService.save(author);
     }
 }
