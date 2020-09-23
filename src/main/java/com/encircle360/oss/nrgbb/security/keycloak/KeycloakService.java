@@ -20,5 +20,4 @@ public class KeycloakService {
     @Value("${resourceServer.resourceId}")
     private String clientId;
 
-
 }

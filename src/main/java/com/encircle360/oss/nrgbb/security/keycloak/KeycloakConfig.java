@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Profile;
 import lombok.Data;
 
 @Data
-@Profile("keycloak")
 @Configuration
+@Profile("keycloak")
 @ConfigurationProperties(prefix = "keycloak.admin")
 public class KeycloakConfig {
 

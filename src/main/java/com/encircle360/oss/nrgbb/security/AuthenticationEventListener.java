@@ -1,4 +1,4 @@
-package com.encircle360.oss.nrgbb.listener;
+package com.encircle360.oss.nrgbb.security;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
