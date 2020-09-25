@@ -58,5 +58,7 @@ dependencies {
 }
 
 test {
+    environment "SPRING_PROFILES_ACTIVE", "insecure"
     useJUnitPlatform()
+    //exclude 'com/encircle360/oss/nrbb/integration/**'
 }

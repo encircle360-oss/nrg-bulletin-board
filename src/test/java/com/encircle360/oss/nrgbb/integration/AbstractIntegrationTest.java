@@ -52,7 +52,12 @@ public abstract class AbstractIntegrationTest {
 
     @BeforeEach
     protected void setToken() {
-        getJwtToken("test", "test");
+        String profile =  System.getenv("SPRING_PROFILES_ACTIVE");
+        if (profile == null || !profile.equalsIgnoreCase("insecure")) {
+            getJwtToken("test", "test");
+        } else {
+            token = "";
+        }
     }
 
     public void getJwtToken(String username, String password) {
