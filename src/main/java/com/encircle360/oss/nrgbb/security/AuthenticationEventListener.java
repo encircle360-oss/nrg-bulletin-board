@@ -25,7 +25,6 @@ public class AuthenticationEventListener {
 
         String username = principal.getClaimAsString("preferred_username");
 
-        // todo add check if token contains id of user
         if (username == null || authorService.countByEmail(username) > 0) {
             return;
         }
