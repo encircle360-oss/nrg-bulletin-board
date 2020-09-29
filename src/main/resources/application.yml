@@ -9,3 +9,8 @@ spring:
 
 resourceServer:
   resourceId: nrg-bulletin-board
+server:
+  port: 50005
+management:
+  server:
+    port: 50006
