@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: nrg-bulletin-board
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:1111/auth/realms/master
+
+resourceServer:
+  resourceId: nrg-bulletin-board
+server:
+  port: 50005
+management:
+  server:
+    port: 50006
